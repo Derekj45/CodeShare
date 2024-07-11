@@ -1,61 +1,36 @@
-import random
+#include <stdio.h>
+#include <cs50.h>
 
-game_title = "Word Raider"
+void draw(int n);
+void print_attack(int spaces);
 
-word_bank = []
+int main(void)
+{
+    int att = get_int("Attack: ");
+    draw(att);
+}
 
-with open("words.txt") as word_file:
-    for line in word_file:
-        word_bank.append(line.rstrip().lower())
+void draw(int n)
+{
+    // Base case to stop recursion
+    if (n <= 0)
+    {
+        return;
+    }
 
-word_to_guess = random.choice(word_bank)
+    // Recursive call
+    draw(n - 1);
 
-misplaced_guesses = []
-incorrect_guesses = []
-max_turns = 5
-turns_taken = 0
+    // Print "Attack" with indentation
+    print_attack(n);
+}
 
-print("Welcome to", game_title)
-print("The word has", len(word_to_guess), "letters.")
-print("You have", max_turns - turns_taken, "turns left.")
-
-while turns_taken < max_turns:
-
-    guess = input("Guess a word: ").lower()
-
-    if len(guess) != len(word_to_guess) or not guess.isalpha():
-        print("Please enter a", len(word_to_guess), "letter word.")
-        continue
-
-    correct_positions = ""
-    for index, c in enumerate(guess):
-        if c == word_to_guess[index]:
-            correct_positions += c + " "
-        else:
-            correct_positions += "_ "
-
-    print("Word: ", correct_positions.strip())
-
-    for index, c in enumerate(guess):
-        if c == word_to_guess[index]:
-            if c in misplaced_guesses:
-                misplaced_guesses.remove(c)
-        elif c in word_to_guess:
-            if c not in misplaced_guesses:
-                misplaced_guesses.append(c)
-        elif c not in incorrect_guesses:
-            incorrect_guesses.append(c)
-
-    print("Misplaced letters: ", misplaced_guesses)
-    print("Incorrect letters: ", incorrect_guesses)
-    turns_taken += 1
-
-    if guess == word_to_guess:
-        print("Congratulations, you win!")
-        break
-
-    if turns_taken == max_turns:
-        print("Sorry, you lost. The word was", word_to_guess)
-        break
-
-    print("You have", max_turns - turns_taken, "turns left.")
+// Function to print "Attack" with given number of leading spaces
+void print_attack(int spaces)
+{
+    for (int i = 0; i < spaces; i++)
+    {
+        printf(" ");
+    }
+    printf("Attack\n");
+}
